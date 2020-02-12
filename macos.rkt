@@ -1,7 +1,8 @@
 #lang racket/base
 
 (require ffi/unsafe
-         ffi/unsafe/define)
+         ffi/unsafe/define
+         racket/unsafe/ops)
 
 (provide nanotime)
 
@@ -20,5 +21,11 @@
 (define numer (mach_timebase_info_data-numer info))
 (define denom (mach_timebase_info_data-denom info))
 
-(define (nanotime)
-  (* (/ (mach_absolute_time) denom) numer))
+(define nanotime
+  (cond
+    [(= 1 numer denom)
+     mach_absolute_time]
+
+    [else
+     (lambda ()
+       (unsafe-fx+ (unsafe-fxquotient (mach_absolute_time) denom) numer))]))

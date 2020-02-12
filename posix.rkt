@@ -1,7 +1,9 @@
 #lang racket/base
 
 (require ffi/unsafe
-         ffi/unsafe/define)
+         ffi/unsafe/atomic
+         ffi/unsafe/define
+         racket/unsafe/ops)
 
 (provide nanotime)
 
@@ -15,9 +17,13 @@
 
 (define-libc clock_gettime (_fun _int _timespec-pointer -> _int))
 
+(define ts (make-timespec 0 0))
+
 (define (nanotime)
-  (define ts (make-timespec 0 0))
+  (start-atomic)
   (when (< (clock_gettime CLOCK_MONOTONIC ts) 0)
+    (end-atomic)
     (error 'nanotime))
-  (+ (* (timespec-tv_sec ts) 1000000000)
-     (timespec-tv_nsec ts)))
+  (begin0 (unsafe-fx+ (unsafe-fx* (timespec-tv_sec ts) 1000000000)
+                      (timespec-tv_nsec ts))
+    (end-atomic)))
