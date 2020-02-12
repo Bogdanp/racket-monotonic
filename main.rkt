@@ -3,7 +3,8 @@
 (require racket/contract)
 
 (provide
- current-monotonic-nanoseconds)
+ current-monotonic-nanoseconds
+ nanotime)
 
 (define current-custom-monotonic-nanoseconds
   (make-parameter #f))
