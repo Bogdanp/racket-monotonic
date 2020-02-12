@@ -16,5 +16,5 @@ jobs:
         distribution: 'full'
         variant: 'regular'
         version: '7.5'
-    - run: raco pkg install --auto --batch
-    - run: raco test main.rkt
+    - run: sudo raco pkg install --auto --batch
+    - run: sudo raco test main.rkt
