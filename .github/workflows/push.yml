@@ -2,7 +2,12 @@ on: push
 name: CI
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: "Build on ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["macos-latest", "ubuntu-latest"]
     steps:
     - uses: actions/checkout@master
     - uses: Bogdanp/setup-racket@v0.6
