@@ -5,6 +5,8 @@
 
 (provide nanotime)
 
+(define CLOCK_MONOTONIC 1)
+
 (define-ffi-definer define-libc (ffi-lib "libc.so.6"))
 
 (define-cstruct _timespec
@@ -15,7 +17,7 @@
 
 (define (nanotime)
   (define ts (make-timespec 0 0))
-  (when (< (clock_gettime 1 ts) 0)
+  (when (< (clock_gettime CLOCK_MONOTONIC ts) 0)
     (error 'nanotime))
   (+ (* (timespec-tv_sec ts) 1000000000)
      (timespec-tv_nsec ts)))
