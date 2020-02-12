@@ -1,0 +1,15 @@
+on: push
+name: CI
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: Bogdanp/setup-racket@v0.6
+      with:
+        architecture: 'x64'
+        distribution: 'full'
+        variant: 'regular'
+        version: '7.5'
+    - run: raco pkg install --auto --batch
+    - run: raco test main.rkt
