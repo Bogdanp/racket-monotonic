@@ -21,9 +21,10 @@
 
 (define (nanotime)
   (start-atomic)
-  (when (< (clock_gettime CLOCK_MONOTONIC ts) 0)
+  (define res (clock_gettime CLOCK_MONOTONIC ts))
+  (when (< res 0)
     (end-atomic)
-    (error 'nanotime))
+    (error "nanotime: ~a" res))
   (begin0 (unsafe-fx+ (unsafe-fx* (timespec-tv_sec ts) 1000000000)
                       (timespec-tv_nsec ts))
     (end-atomic)))
