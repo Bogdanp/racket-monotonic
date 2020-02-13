@@ -19,7 +19,7 @@
 
 (define nanotime
   (case (system-type)
-    [(windows) (error "~a is not currently supported" (system-type))]
+    [(windows) (dynamic-require "windows.rkt" 'nanotime)]
     [(macosx)  (dynamic-require "macos.rkt" 'nanotime)]
     [else      (dynamic-require "posix.rkt" 'nanotime)]))
 

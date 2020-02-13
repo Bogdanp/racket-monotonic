@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["macos-latest", "ubuntu-latest"]
+        os: ["macos-latest", "ubuntu-latest", "windows-latest"]
     steps:
     - uses: actions/checkout@master
     - uses: Bogdanp/setup-racket@v0.6
@@ -16,5 +16,4 @@ jobs:
         distribution: 'full'
         variant: 'regular'
         version: '7.5'
-    - run: sudo raco pkg install --auto --batch
-    - run: sudo raco test main.rkt
+    - run: raco test main.rkt
