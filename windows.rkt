@@ -13,18 +13,18 @@
   (when (zero? r)
     (error who "failed: ~a" r)))
 
-(define-ffi-definer define-libc (ffi-lib "msvcrt.dll"))
+(define-ffi-definer define-kernel (ffi-lib "kernel32.dll"))
 
 (define-cstruct _LARGE_INTEGER
   ([QuadPart _int64]))
 
-(define-libc QueryPerformanceCounter (_fun _LARGE_INTEGER-pointer
-                                           -> (r : _int)
-                                           -> (check r 'QueryPerformanceCounter)))
-
-(define-libc QueryPerformanceFrequency (_fun _LARGE_INTEGER-pointer
+(define-kernel QueryPerformanceCounter (_fun _LARGE_INTEGER-pointer
                                              -> (r : _int)
-                                             -> (check r 'QueryPerformanceFrequency)))
+                                             -> (check r 'QueryPerformanceCounter)))
+
+(define-kernel QueryPerformanceFrequency (_fun _LARGE_INTEGER-pointer
+                                               -> (r : _int)
+                                               -> (check r 'QueryPerformanceFrequency)))
 
 (define freq
   (let ([out (make-LARGE_INTEGER 0)])
