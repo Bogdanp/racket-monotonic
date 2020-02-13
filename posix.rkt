@@ -12,12 +12,17 @@
 (define-ffi-definer define-libc (ffi-lib "libc.so.6"))
 
 (define-cstruct _timespec
-  ([tv_sec _long]
+  ([tv_sec  _long]
    [tv_nsec _long]))
 
 (define-libc clock_gettime (_fun _int _timespec-pointer -> _int))
 
 (define ts (make-timespec 0 0))
+
+(define-values (add mul)
+  (if (< (system-type 'word) 64)
+      (values + *)
+      (values unsafe-fx+ unsafe-fx*)))
 
 (define (nanotime)
   (start-atomic)
@@ -25,6 +30,6 @@
   (when (< res 0)
     (end-atomic)
     (error "nanotime: ~a" res))
-  (begin0 (unsafe-fx+ (unsafe-fx* (timespec-tv_sec ts) 1000000000)
-                      (timespec-tv_nsec ts))
+  (begin0 (add (mul (timespec-tv_sec ts) 1000000000)
+               (timespec-tv_nsec ts))
     (end-atomic)))
