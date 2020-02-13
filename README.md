@@ -1,7 +1,6 @@
 # racket-monotonic
 
-Monotonic times for racket.  Super alpha stuff.  Only macOS and Linux
-are currently supported.
+Monotonic times for racket.
 
 ## Installation
 
@@ -9,12 +8,7 @@ are currently supported.
 
 ## Usage
 
-``` racket
-(require monotonic)
-
-;; Get the current monotonic clock in nanoseconds.
-(current-monotonic-nanoseconds)
-```
+    raco docs monotonic
 
 ## License
 
