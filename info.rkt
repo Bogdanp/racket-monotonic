@@ -1,7 +1,7 @@
 #lang info
 
 (define collection "monotonic")
-(define version "0.1.0")
+(define version "0.1.1")
 (define deps '("base"))
 (define build-deps '("racket-doc"
                      "rackunit-lib"

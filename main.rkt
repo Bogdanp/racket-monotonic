@@ -1,10 +1,15 @@
 #lang racket/base
 
-(require racket/contract)
+(require racket/contract
+         racket/runtime-path)
 
 (provide
  current-monotonic-nanoseconds
  nanotime)
+
+(define-runtime-module-path macos "macos.rkt")
+(define-runtime-module-path posix "posix.rkt")
+(define-runtime-module-path windows "windows.rkt")
 
 (define current-custom-monotonic-nanoseconds
   (make-parameter #f))
@@ -19,9 +24,9 @@
 
 (define nanotime
   (case (system-type)
-    [(windows) (dynamic-require "windows.rkt" 'nanotime)]
-    [(macosx)  (dynamic-require "macos.rkt" 'nanotime)]
-    [else      (dynamic-require "posix.rkt" 'nanotime)]))
+    [(windows) (dynamic-require windows 'nanotime)]
+    [(macosx)  (dynamic-require macos 'nanotime)]
+    [else      (dynamic-require posix 'nanotime)]))
 
 (module+ test
   (require rackunit)
