@@ -6,7 +6,8 @@
 
 (provide nanotime)
 
-(define-ffi-definer define-libc (ffi-lib "libc"))
+(define-ffi-definer define-libc (ffi-lib #f)
+  #:default-make-fail make-not-available)
 
 (define-cstruct _mach_timebase_info_data
   ([numer _uint32]

@@ -9,7 +9,8 @@
 
 (define CLOCK_MONOTONIC 1)
 
-(define-ffi-definer define-libc (ffi-lib "libc.so.6"))
+(define-ffi-definer define-libc (ffi-lib #f)
+  #:default-make-fail make-not-available)
 
 (define-cstruct _timespec
   ([tv_sec  _long]
@@ -29,7 +30,7 @@
   (define res (clock_gettime CLOCK_MONOTONIC ts))
   (when (< res 0)
     (end-atomic)
-    (error "nanotime: ~a" res))
+    (error 'nanotime "~a" res))
   (begin0 (add (mul (timespec-tv_sec ts) 1000000000)
                (timespec-tv_nsec ts))
     (end-atomic)))
