@@ -7,3 +7,4 @@
                      "rackunit-lib"
                      "scribble-lib"))
 (define scribblings '(("monotonic.scrbl")))
+(define test-omit-paths '("macos.rkt" "posix.rkt" "windows.rkt"))
