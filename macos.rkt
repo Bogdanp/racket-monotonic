@@ -1,8 +1,7 @@
 #lang racket/base
 
 (require ffi/unsafe
-         ffi/unsafe/define
-         racket/unsafe/ops)
+         ffi/unsafe/define)
 
 (provide nanotime)
 
