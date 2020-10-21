@@ -14,7 +14,7 @@
    [denom _uint32]))
 
 (define-libc mach_timebase_info (_fun _mach_timebase_info_data-pointer -> _void))
-(define-libc mach_absolute_time (_fun -> _uint64))
+(define-libc mach_continuous_time (_fun -> _uint64))
 
 (define info (make-mach_timebase_info_data 0 0))
 (mach_timebase_info info)
@@ -25,8 +25,8 @@
 (define nanotime
   (cond
     [(= 1 numer denom)
-     mach_absolute_time]
+     mach_continuous_time]
 
     [else
      (lambda ()
-       (unsafe-fx+ (unsafe-fxquotient (mach_absolute_time) denom) numer))]))
+       (quotient (* (mach_continuous_time) numer) denom))]))
