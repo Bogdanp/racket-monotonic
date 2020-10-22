@@ -10,10 +10,10 @@ jobs:
         os: ["macos-latest", "ubuntu-latest", "windows-latest"]
     steps:
     - uses: actions/checkout@master
-    - uses: Bogdanp/setup-racket@v0.6
+    - uses: Bogdanp/setup-racket@v0.10
       with:
         architecture: 'x64'
         distribution: 'full'
-        variant: 'regular'
-        version: '7.5'
+        variant: 'cs'
+        version: '7.8'
     - run: raco test main.rkt
