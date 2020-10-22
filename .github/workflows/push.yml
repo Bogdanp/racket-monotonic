@@ -2,11 +2,13 @@ on: push
 name: CI
 jobs:
   build:
-    name: "Build on ${{ matrix.os }}"
+    name: "Build on ${{ matrix.os }}, version ${{ matrix.version }} (${{ matrix.variant }})"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        variant: ["cs", "regular"]
+        version: ["7.7", "7.8", "current"]
         os: ["macos-latest", "ubuntu-latest", "windows-latest"]
     steps:
     - uses: actions/checkout@master
@@ -14,6 +16,6 @@ jobs:
       with:
         architecture: 'x64'
         distribution: 'full'
-        variant: 'cs'
-        version: '7.8'
+        variant: ${{ matrix.variant }}
+        version: ${{ matrix.version }}
     - run: raco test main.rkt
