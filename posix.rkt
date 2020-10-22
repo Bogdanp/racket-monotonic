@@ -2,8 +2,7 @@
 
 (require ffi/unsafe
          ffi/unsafe/atomic
-         ffi/unsafe/define
-         racket/unsafe/ops)
+         ffi/unsafe/define)
 
 (provide nanotime)
 
@@ -20,17 +19,12 @@
 
 (define ts (make-timespec 0 0))
 
-(define-values (add mul)
-  (if (< (system-type 'word) 64)
-      (values + *)
-      (values unsafe-fx+ unsafe-fx*)))
-
 (define (nanotime)
   (start-atomic)
   (define res (clock_gettime CLOCK_MONOTONIC ts))
   (when (< res 0)
     (end-atomic)
     (error 'nanotime "~a" res))
-  (begin0 (add (mul (timespec-tv_sec ts) 1000000000)
-               (timespec-tv_nsec ts))
+  (begin0 (+ (* (timespec-tv_sec ts) 1000000000)
+             (timespec-tv_nsec ts))
     (end-atomic)))

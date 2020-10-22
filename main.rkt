@@ -7,6 +7,7 @@
  current-monotonic-nanoseconds
  nanotime)
 
+(define-runtime-module-path cs "cs.rkt")
 (define-runtime-module-path macos "macos.rkt")
 (define-runtime-module-path posix "posix.rkt")
 (define-runtime-module-path windows "windows.rkt")
@@ -23,10 +24,12 @@
      (if v v (nanotime)))))
 
 (define nanotime
-  (case (system-type)
-    [(windows) (dynamic-require windows 'nanotime)]
-    [(macosx)  (dynamic-require macos 'nanotime)]
-    [else      (dynamic-require posix 'nanotime)]))
+  (case (system-type 'vm)
+    [(cs) (dynamic-require cs 'nanotime)]
+    [else (case (system-type)
+            [(windows) (dynamic-require windows 'nanotime)]
+            [(macosx)  (dynamic-require macos 'nanotime)]
+            [else      (dynamic-require posix 'nanotime)])]))
 
 (module+ test
   (require rackunit)
